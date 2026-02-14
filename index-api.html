@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaStore - Pure Water Delivery</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Sticky Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-tint"></i> AquaStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="product_list.html">
+                            <i class="fas fa-shopping-bag"></i> Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="bulk_residential.html">
+                            <i class="fas fa-truck"></i> Bulk Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="custom_order.html">
+                            <i class="fas fa-calculator"></i> Custom Order
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown" id="userDropdown" style="display: none;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i> <span id="navUserName">Account</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="profile.html">
+                                <i class="fas fa-user-edit"></i> My Profile
+                            </a></li>
+                            <li><a class="dropdown-item" href="orders.html">
+                                <i class="fas fa-box"></i> My Orders
+                            </a></li>
+                            <li><a class="dropdown-item" href="wishlist.html">
+                                <i class="fas fa-heart"></i> Wishlist
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item" id="authActions">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item" id="authActions2">
+                        <a class="nav-link" href="register.html">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold text-white mb-4">Pure Water Delivered to Your Doorstep</h1>
+                    <p class="lead text-white mb-4">Premium water cans and bulk delivery services for homes and businesses</p>
+                    <a href="product_list.html" class="btn btn-light btn-lg">
+                        <i class="fas fa-shopping-bag"></i> Shop Now
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <img src="water delivery.jpg" alt="Water Delivery" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Why Choose AquaStore?</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-tint fa-3x text-primary"></i>
+                        </div>
+                        <h4>Pure Quality Water</h4>
+                        <p>100% purified water with essential minerals for your health and well-being.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-truck fa-3x text-success"></i>
+                        </div>
+                        <h4>Fast Delivery</h4>
+                        <p>Quick and reliable delivery service right to your doorstep within 24 hours.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="text-center">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-rupee-sign fa-3x text-warning"></i>
+                        </div>
+                        <h4>Affordable Prices</h4>
+                        <p>Competitive pricing with bulk discounts and subscription plans for regular customers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Featured Water Products</h2>
+            <div class="row" id="featuredProducts">
+                <!-- Products will be loaded by JavaScript -->
+            </div>
+            <div class="text-center mt-4">
+                <a href="product_list.html" class="btn btn-primary btn-lg">
+                    <i class="fas fa-th"></i> View All Products
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Our Services</h2>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-home fa-2x text-primary me-3"></i>
+                                <h4 class="mb-0">Residential Service</h4>
+                            </div>
+                            <p>Regular water delivery for homes with flexible scheduling and subscription plans.</p>
+                            <a href="bulk_residential.html" class="btn btn-outline-primary">
+                                <i class="fas fa-arrow-right"></i> Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-calculator fa-2x text-success me-3"></i>
+                                <h4 class="mb-0">Custom Orders</h4>
+                            </div>
+                            <p>Order custom water quantities based on your specific needs and requirements.</p>
+                            <a href="custom_order.html" class="btn btn-outline-success">
+                                <i class="fas fa-arrow-right"></i> Order Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">What Our Customers Say</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <p class="card-text">"Excellent service! The water quality is outstanding and delivery is always on time."</p>
+                            <footer class="blockquote-footer">
+                                <small>Rahul Sharma</small>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <p class="card-text">"Great prices and reliable service. The subscription plan saves me a lot of money!"</p>
+                            <footer class="blockquote-footer">
+                                <small>Priya Patel</small>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <p class="card-text">"Very professional team and the water quality is consistently excellent. Highly recommended!"</p>
+                            <footer class="blockquote-footer">
+                                <small>Amit Kumar</small>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-tint"></i> AquaStore</h5>
+                    <p>Your trusted partner for clean water delivery</p>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>&copy; 2024 AquaStore. All rights reserved.</p>
+                    <p>
+                        <a href="#" class="text-white">Privacy Policy</a> | 
+                        <a href="#" class="text-white">Terms of Service</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart-api.js"></script>
+    <script src="js/main-api.js"></script>
+    <script>
+        // Load featured products on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadFeaturedProducts();
+        });
+
+        async function loadFeaturedProducts() {
+            try {
+                const products = await api.getProducts({ limit: 5 });
+                renderFeaturedProducts(products);
+            } catch (error) {
+                console.error('Failed to load featured products:', error);
+                // Fallback to mock products
+                const mockProducts = [
+                    { id: 1, name: '1L Water Can', price: 25, size: '1L', image: 'https://via.placeholder.com/200x200/007BFF/ffffff?text=1L' },
+                    { id: 2, name: '2L Water Can', price: 45, size: '2L', image: 'https://via.placeholder.com/200x200/007BFF/ffffff?text=2L' },
+                    { id: 3, name: '5L Water Can', price: 95, size: '5L', image: 'https://via.placeholder.com/200x200/007BFF/ffffff?text=5L' },
+                    { id: 4, name: '10L Water Can', price: 180, size: '10L', image: 'https://via.placeholder.com/200x200/007BFF/ffffff?text=10L' },
+                    { id: 5, name: '20L Water Can', price: 350, size: '20L', image: 'https://via.placeholder.com/200x200/007BFF/ffffff?text=20L' }
+                ];
+                renderFeaturedProducts(mockProducts);
+            }
+        }
+
+        function renderFeaturedProducts(products) {
+            const container = document.getElementById('featuredProducts');
+            container.innerHTML = products.map(product => `
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="${product.image || 'https://via.placeholder.com/200x200/007BFF/ffffff?text=Product'}" class="card-img-top" alt="${product.name}">
+                        <div class="card-body">
+                            <h6 class="card-title">${product.name}</h6>
+                            <p class="card-text">Size: ${product.size}</p>
+                            <p class="card-text fw-bold text-primary">₹${product.price}</p>
+                            <button class="btn btn-primary w-100" onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.image || ''}')">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

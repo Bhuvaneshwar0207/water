@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - AquaStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Sticky Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-tint"></i> AquaStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register.html">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Listing -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="mb-4">Regular Water Products</h2>
+            
+            <!-- Quick Actions -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <a href="bulk_residential.html" class="btn btn-success w-100">
+                        <i class="fas fa-truck"></i> Residential Bulk Orders
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <a href="custom_order.html" class="btn btn-info w-100">
+                        <i class="fas fa-calculator"></i> Custom Quantity Order
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button class="btn btn-outline-primary w-100" onclick="showBulkInfo()">
+                        <i class="fas fa-info-circle"></i> Bulk Benefits
+                    </button>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <a href="index.html" class="btn btn-outline-secondary w-100">
+                        <i class="fas fa-home"></i> Back to Home
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="categoryFilter" class="form-label">Category</label>
+                        <select class="form-select" id="categoryFilter" onchange="filterProducts()">
+                            <option value="">All Sizes</option>
+                            <option value="1L">1L</option>
+                            <option value="2L">2L</option>
+                            <option value="5L">5L</option>
+                            <option value="10L">10L</option>
+                            <option value="20L">20L</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="sizeFilter" class="form-label">Filter by Size</label>
+                        <select class="form-select" id="sizeFilter" onchange="filterProducts()">
+                            <option value="">All Sizes</option>
+                            <option value="1L">1L</option>
+                            <option value="2L">2L</option>
+                            <option value="5L">5L</option>
+                            <option value="10L">10L</option>
+                            <option value="20L">20L</option>
+                            <option value="50L">50L</option>
+                            <option value="100L">100L</option>
+                            <option value="200L">200L</option>
+                            <option value="250L">250L</option>
+                            <option value="500L">500L</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="sortFilter" class="form-label">Sort by Price</label>
+                        <select class="form-select" id="sortFilter" onchange="sortProducts()">
+                            <option value="">Default</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-desc">Price: High to Low</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Quick Filters</label>
+                        <div class="btn-group w-100" role="group">
+                            <button type="button" class="btn btn-outline-primary" onclick="quickFilter('regular')">Regular</button>
+                            <button type="button" class="btn btn-outline-primary" onclick="quickFilter('residential-bulk')">Bulk</button>
+                            <button type="button" class="btn btn-outline-primary" onclick="quickFilter('residential-subscription')">Subscription</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="product-grid" id="productsGrid">
+                <!-- Products will be loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-tint"></i> AquaStore</h5>
+                    <p>Your trusted partner for clean water delivery</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>&copy; 2024 AquaStore. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        let allProducts = [];
+        let filteredProducts = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            updateCartBadge();
+        });
+
+        function loadProducts() {
+            allProducts = [
+                { id: 1, name: '1L Water Can', price: 25, size: '1L', image: 'images/1.jpg', category: 'regular' },
+                { id: 2, name: '2L Water Can', price: 45, size: '2L', image: 'images/2.jpg', category: 'regular' },
+                { id: 3, name: '5L Water Can', price: 95, size: '5L', image: 'images/5.jpg', category: 'regular' },
+                { id: 4, name: '10L Water Can', price: 180, size: '10L', image: 'images/10.jpg', category: 'regular' },
+                { id: 5, name: '20L Water Can', price: 350, size: '20L', image: 'images/20.jpg', category: 'regular' }
+            ];
+            
+            filteredProducts = [...allProducts];
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const container = document.getElementById('productsGrid');
+            
+            if (filteredProducts.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                        <h4>No products found</h4>
+                        <p class="text-muted">Try adjusting your filters</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filteredProducts.map(product => {
+                return `
+                    <div class="card h-100 product-card">
+                        <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                        <div class="card-body">
+                            <h5 class="card-title">${product.name}</h5>
+                            <p class="card-text">Size: ${product.size}</p>
+                            <p class="card-text fw-bold text-primary">₹${product.price}</p>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.image}')">
+                                    <i class="fas fa-cart-plus"></i> Add to Cart
+                                </button>
+                                <a href="product_detail.html?id=${product.id}" class="btn btn-outline-primary">
+                                    <i class="fas fa-eye"></i> View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterProducts() {
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const sizeFilter = document.getElementById('sizeFilter').value;
+            
+            filteredProducts = allProducts.filter(product => {
+                if (categoryFilter && product.size !== categoryFilter) {
+                    return false;
+                }
+                if (sizeFilter && product.size !== sizeFilter) {
+                    return false;
+                }
+                return true;
+            });
+            
+            renderProducts();
+        }
+
+        function quickFilter(category) {
+            document.getElementById('categoryFilter').value = category;
+            filterProducts();
+            
+            // Update button states
+            document.querySelectorAll('.btn-group button').forEach(btn => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline-primary');
+            });
+            event.target.classList.remove('btn-outline-primary');
+            event.target.classList.add('btn-primary');
+        }
+
+        function sortProducts() {
+            const sortFilter = document.getElementById('sortFilter').value;
+            
+            switch(sortFilter) {
+                case 'price-asc':
+                    filteredProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-desc':
+                    filteredProducts.sort((a, b) => b.price - a.price);
+                    break;
+                default:
+                    filteredProducts.sort((a, b) => a.id - b.id);
+            }
+            
+            renderProducts();
+        }
+
+        function showBulkInfo() {
+            alert('Residential Bulk Benefits:\n\n• 15-20% savings compared to individual cans\n• Free delivery for orders above 100L\n• Scheduled delivery at your convenience\n• Dedicated support for bulk customers\n• Quality guarantee on all bulk orders\n\nVisit our Bulk Orders page for more details!');
+        }
+    </script>
+</body>
+</html>

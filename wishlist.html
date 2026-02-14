@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist - AquaStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Sticky Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-tint"></i> AquaStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="product_list.html">
+                            <i class="fas fa-shopping-bag"></i> Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="orders.html">
+                            <i class="fas fa-box"></i> My Orders
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i> <span id="navUserName">Account</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="profile.html">
+                                <i class="fas fa-user-edit"></i> My Profile
+                            </a></li>
+                            <li><a class="dropdown-item active" href="wishlist.html">
+                                <i class="fas fa-heart"></i> Wishlist
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Wishlist Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>My Wishlist</h2>
+                <div class="d-flex gap-2 align-items-center">
+                    <span class="text-muted" id="wishlistCount">0 items</span>
+                    <button class="btn btn-outline-danger" onclick="clearWishlist()" id="clearWishlistBtn" style="display: none;">
+                        <i class="fas fa-trash"></i> Clear Wishlist
+                    </button>
+                </div>
+            </div>
+
+            <div id="wishlistContainer">
+                <!-- Wishlist items will be loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-tint"></i> AquaStore</h5>
+                    <p>Your trusted partner for clean water delivery</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>&copy; 2024 AquaStore. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        let wishlist = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserFromStorage();
+            updateCartBadge();
+            loadWishlist();
+            updateWishlistCount();
+            
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+        });
+
+        function loadWishlist() {
+            const savedWishlist = localStorage.getItem('aquaStoreWishlist');
+            if (savedWishlist) {
+                wishlist = JSON.parse(savedWishlist);
+            } else {
+                // Mock wishlist for demonstration
+                wishlist = [
+                    {
+                        id: 'wish_1',
+                        productId: 1,
+                        name: '1L Water Can',
+                        price: 25,
+                        size: '1L',
+                        image: 'https://via.placeholder.com/200x200/007BFF/ffffff?text=1L',
+                        addedDate: '2024-02-10'
+                    },
+                    {
+                        id: 'wish_2',
+                        productId: 3,
+                        name: '5L Water Can',
+                        price: 95,
+                        size: '5L',
+                        image: 'https://via.placeholder.com/200x200/007BFF/ffffff?text=5L',
+                        addedDate: '2024-02-11'
+                    },
+                    {
+                        id: 'wish_3',
+                        productId: 4,
+                        name: '10L Water Can',
+                        price: 180,
+                        size: '10L',
+                        image: 'https://via.placeholder.com/200x200/007BFF/ffffff?text=10L',
+                        addedDate: '2024-02-12'
+                    }
+                ];
+            }
+            
+            renderWishlist();
+        }
+
+        function renderWishlist() {
+            const container = document.getElementById('wishlistContainer');
+            const clearBtn = document.getElementById('clearWishlistBtn');
+            
+            if (wishlist.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-heart fa-3x text-muted mb-3"></i>
+                        <h4>Your wishlist is empty</h4>
+                        <p class="text-muted">Save items you love for later!</p>
+                        <a href="product_list.html" class="btn btn-primary mt-3">
+                            <i class="fas fa-shopping-bag"></i> Browse Products
+                        </a>
+                    </div>
+                `;
+                if (clearBtn) clearBtn.style.display = 'none';
+                return;
+            }
+            
+            if (clearBtn) clearBtn.style.display = 'block';
+            
+            container.innerHTML = `
+                <div class="row">
+                    ${wishlist.map(item => `
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <img src="${item.image}" class="card-img-top" alt="${item.name}">
+                                <div class="card-body">
+                                    <h6 class="card-title">${item.name}</h6>
+                                    <p class="card-text">Size: ${item.size}</p>
+                                    <p class="card-text fw-bold text-primary">₹${item.price}</p>
+                                    <p class="card-text text-muted small">
+                                        <i class="fas fa-calendar"></i> Added ${new Date(item.addedDate).toLocaleDateString()}
+                                    </p>
+                                    <div class="d-grid gap-2 mt-2">
+                                        <button class="btn btn-primary" onclick="addToCartFromWishlist(${item.productId}, '${item.name}', ${item.price}, '${item.image}')">
+                                            <i class="fas fa-cart-plus"></i> Add to Cart
+                                        </button>
+                                        <button class="btn btn-outline-danger" onclick="removeFromWishlist('${item.id}')">
+                                            <i class="fas fa-trash"></i> Remove
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function updateWishlistCount() {
+            const countElement = document.getElementById('wishlistCount');
+            if (countElement) {
+                countElement.textContent = `${wishlist.length} items`;
+            }
+        }
+
+        function addToCartFromWishlist(productId, productName, price, image) {
+            // Add to cart using existing function
+            addToCart(productId, productName, price, image);
+            
+            // Remove from wishlist
+            removeFromWishlist(wishlist.find(item => item.productId === productId).id);
+        }
+
+        function removeFromWishlist(itemId) {
+            if (confirm('Remove this item from your wishlist?')) {
+                wishlist = wishlist.filter(item => item.id !== itemId);
+                saveWishlist();
+                renderWishlist();
+                updateWishlistCount();
+                showNotification('Item removed from wishlist!', 'success');
+            }
+        }
+
+        function saveWishlist() {
+            localStorage.setItem('aquaStoreWishlist', JSON.stringify(wishlist));
+        }
+
+        function clearWishlist() {
+            if (confirm('Are you sure you want to clear your entire wishlist?')) {
+                wishlist = [];
+                saveWishlist();
+                renderWishlist();
+                updateWishlistCount();
+                showNotification('Wishlist cleared!', 'success');
+            }
+        }
+    </script>
+</body>
+</html>

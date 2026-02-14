@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Residential Bulk Orders - AquaStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Sticky Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-tint"></i> AquaStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register.html">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Bulk Orders Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>Residential Bulk Water Delivery</h2>
+                <p class="lead">Perfect for large families, apartments, and residential communities</p>
+            </div>
+
+            <!-- Bulk Packages -->
+            <div class="row mb-5">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 bulk-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-home fa-3x text-primary mb-3"></i>
+                            <h4>Family Package</h4>
+                            <h3 class="text-primary">50L</h3>
+                            <p class="text-muted">Perfect for families of 4-6</p>
+                            <ul class="list-unstyled mb-4">
+                                <li><i class="fas fa-check text-success"></i> Weekly delivery</li>
+                                <li><i class="fas fa-check text-success"></i> Free installation</li>
+                                <li><i class="fas fa-check text-success"></i> Emergency support</li>
+                            </ul>
+                            <h5 class="text-primary">₹800/month</h5>
+                            <button class="btn btn-primary w-100" onclick="selectBulkPackage('Family Package', 800, '50L')">
+                                Select Package
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 bulk-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-building fa-3x text-success mb-3"></i>
+                            <h4>Apartment Package</h4>
+                            <h3 class="text-success">100L</h3>
+                            <p class="text-muted">Ideal for small apartments</p>
+                            <ul class="list-unstyled mb-4">
+                                <li><i class="fas fa-check text-success"></i> Twice weekly delivery</li>
+                                <li><i class="fas fa-check text-success"></i> Storage tank included</li>
+                                <li><i class="fas fa-check text-success"></i> 24/7 support</li>
+                            </ul>
+                            <h5 class="text-success">₹1,500/month</h5>
+                            <button class="btn btn-success w-100" onclick="selectBulkPackage('Apartment Package', 1500, '100L')">
+                                Select Package
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 bulk-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-city fa-3x text-warning mb-3"></i>
+                            <h4>Community Package</h4>
+                            <h3 class="text-warning">200L</h3>
+                            <p class="text-muted">Best for residential complexes</p>
+                            <ul class="list-unstyled mb-4">
+                                <li><i class="fas fa-check text-success"></i> Daily delivery available</li>
+                                <li><i class="fas fa-check text-success"></i> Bulk discount pricing</li>
+                                <li><i class="fas fa-check text-success"></i> Dedicated manager</li>
+                            </ul>
+                            <h5 class="text-warning">₹2,800/month</h5>
+                            <button class="btn btn-warning w-100" onclick="selectBulkPackage('Community Package', 2800, '200L')">
+                                Select Package
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Bulk Order -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="mb-4">Custom Bulk Order</h4>
+                            <form onsubmit="processCustomBulkOrder(event)">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="customLiters" class="form-label">Required Liters</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="customLiters" min="50" max="1000" required>
+                                            <span class="input-group-text">Liters</span>
+                                        </div>
+                                        <small class="text-muted">Minimum 50 liters, Maximum 1000 liters</small>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="deliveryFrequency" class="form-label">Delivery Frequency</label>
+                                        <select class="form-select" id="deliveryFrequency" required>
+                                            <option value="">Select Frequency</option>
+                                            <option value="one-time">One Time</option>
+                                            <option value="weekly">Weekly</option>
+                                            <option value="bi-weekly">Bi-Weekly</option>
+                                            <option value="monthly">Monthly</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="urgencyLevel" class="form-label">Delivery Urgency</label>
+                                        <select class="form-select" id="urgencyLevel">
+                                            <option value="normal">Normal (3-5 days)</option>
+                                            <option value="urgent">Urgent (1-2 days)</option>
+                                            <option value="emergency">Emergency (Same day)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="customLitersSlider" class="form-label">Quick Select: <span id="sliderValue">250</span> Liters</label>
+                                        <input type="range" class="form-range" id="customLitersSlider" min="50" max="1000" value="250" step="50">
+                                        <div class="d-flex justify-content-between">
+                                            <small>50L</small>
+                                            <small>1000L</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="estimatedPrice" class="form-label">Estimated Price</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">₹</span>
+                                            <input type="text" class="form-control" id="estimatedPrice" readonly>
+                                            <span class="input-group-text">per delivery</span>
+                                        </div>
+                                        <div class="mt-2">
+                                            <small class="text-success" id="savingsInfo"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="specialRequirements" class="form-label">Special Requirements</label>
+                                    <textarea class="form-control" id="specialRequirements" rows="3" placeholder="Any special delivery instructions or requirements..."></textarea>
+                                </div>
+                                
+                                <!-- Quick Size Buttons -->
+                                <div class="mb-3">
+                                    <label class="form-label">Quick Size Selection:</label>
+                                    <div class="btn-group w-100" role="group">
+                                        <button type="button" class="btn btn-outline-secondary" onclick="setLiters(100)">100L</button>
+                                        <button type="button" class="btn btn-outline-secondary" onclick="setLiters(250)">250L</button>
+                                        <button type="button" class="btn btn-outline-secondary" onclick="setLiters(500)">500L</button>
+                                        <button type="button" class="btn btn-outline-secondary" onclick="setLiters(750)">750L</button>
+                                        <button type="button" class="btn btn-outline-secondary" onclick="setLiters(1000)">1000L</button>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-truck"></i> Get Custom Quote
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Bulk Order Benefits</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-percentage text-success"></i>
+                                    <strong>15-20% Savings</strong> compared to individual cans
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-truck text-primary"></i>
+                                    <strong>Free Delivery</strong> for orders above 100L
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-clock text-warning"></i>
+                                    <strong>Scheduled Delivery</strong> at your convenience
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-headset text-info"></i>
+                                    <strong>Dedicated Support</strong> for bulk customers
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-shield-alt text-success"></i>
+                                    <strong>Quality Guarantee</strong> on all bulk orders
+                                </li>
+                            </ul>
+                            
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle"></i>
+                                <strong>Need Help?</strong><br>
+                                Call our bulk order specialist:<br>
+                                <strong>+91 98765 43210</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-tint"></i> AquaStore</h5>
+                    <p>Your trusted partner for clean water delivery</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>&copy; 2024 AquaStore. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartBadge();
+            setupPriceCalculator();
+        });
+
+        function selectBulkPackage(packageName, price, liters) {
+            const bulkItem = {
+                id: 'bulk_' + Date.now(),
+                name: packageName,
+                price: price,
+                size: liters,
+                image: 'https://via.placeholder.com/200x200/007BFF/ffffff?text=Bulk',
+                quantity: 1,
+                category: 'bulk-package'
+            };
+            
+            // Add to cart
+            cart.push(bulkItem);
+            saveCartToStorage();
+            updateCartBadge();
+            
+            showNotification(`${packageName} added to cart!`, 'success');
+            
+            // Redirect to cart
+            setTimeout(() => {
+                window.location.href = 'cart.html';
+            }, 1500);
+        }
+
+        function setupPriceCalculator() {
+            const litersInput = document.getElementById('customLiters');
+            const sliderInput = document.getElementById('customLitersSlider');
+            const priceInput = document.getElementById('estimatedPrice');
+            const sliderValue = document.getElementById('sliderValue');
+            const savingsInfo = document.getElementById('savingsInfo');
+            
+            if (litersInput && priceInput && sliderInput) {
+                // Sync slider and input
+                litersInput.addEventListener('input', function() {
+                    const liters = parseInt(this.value) || 0;
+                    sliderInput.value = liters;
+                    sliderValue.textContent = liters;
+                    updatePrice(liters, savingsInfo);
+                });
+                
+                sliderInput.addEventListener('input', function() {
+                    const liters = parseInt(this.value) || 0;
+                    litersInput.value = liters;
+                    sliderValue.textContent = liters;
+                    updatePrice(liters, savingsInfo);
+                });
+            }
+        }
+
+        function updatePrice(liters, savingsElement) {
+            const basePrice = 16; // ₹16 per liter for bulk orders
+            const regularPrice = 20; // ₹20 per liter for regular orders
+            const totalPrice = liters * basePrice;
+            const regularTotal = liters * regularPrice;
+            const savings = regularTotal - totalPrice;
+            
+            document.getElementById('estimatedPrice').value = totalPrice.toLocaleString('en-IN');
+            
+            if (savingsElement && liters > 0) {
+                savingsElement.textContent = `You save ₹${savings.toLocaleString('en-IN')} (${Math.round((savings/regularTotal)*100)}% off)`;
+            }
+        }
+
+        function setLiters(amount) {
+            document.getElementById('customLiters').value = amount;
+            document.getElementById('customLitersSlider').value = amount;
+            document.getElementById('sliderValue').textContent = amount;
+            
+            const savingsInfo = document.getElementById('savingsInfo');
+            updatePrice(amount, savingsInfo);
+            
+            // Update button states
+            document.querySelectorAll('.btn-group button').forEach(btn => {
+                btn.classList.remove('btn-secondary');
+                btn.classList.add('btn-outline-secondary');
+            });
+            event.target.classList.remove('btn-outline-secondary');
+            event.target.classList.add('btn-secondary');
+        }
+
+        function processCustomBulkOrder(event) {
+            event.preventDefault();
+            
+            const liters = document.getElementById('customLiters').value;
+            const frequency = document.getElementById('deliveryFrequency').value;
+            const requirements = document.getElementById('specialRequirements').value;
+            const price = document.getElementById('estimatedPrice').value.replace(/,/g, '');
+            
+            const customOrder = {
+                id: 'custom_bulk_' + Date.now(),
+                name: `Custom Bulk Order - ${liters}L`,
+                price: parseInt(price),
+                size: `${liters}L`,
+                image: 'https://via.placeholder.com/200x200/007BFF/ffffff?text=Custom',
+                quantity: 1,
+                category: 'custom-bulk',
+                frequency: frequency,
+                requirements: requirements
+            };
+            
+            cart.push(customOrder);
+            saveCartToStorage();
+            updateCartBadge();
+            
+            showNotification('Custom bulk order added to cart!', 'success');
+            
+            setTimeout(() => {
+                window.location.href = 'cart.html';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

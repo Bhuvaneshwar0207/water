@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaStore - Water Can & Bulk Water Delivery</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Sticky Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-tint"></i> AquaStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="product_list.html">
+                            <i class="fas fa-shopping-bag"></i> Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="bulk_residential.html">
+                            <i class="fas fa-truck"></i> Bulk Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="custom_order.html">
+                            <i class="fas fa-calculator"></i> Custom Order
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown" id="userDropdown" style="display: none;">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user"></i> <span id="navUserName">Account</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="profile.html">
+                                <i class="fas fa-user-edit"></i> My Profile
+                            </a></li>
+                            <li><a class="dropdown-item" href="orders.html">
+                                <i class="fas fa-box"></i> My Orders
+                            </a></li>
+                            <li><a class="dropdown-item" href="wishlist.html">
+                                <i class="fas fa-heart"></i> Wishlist
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item" id="authActions">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item" id="authActions2">
+                        <a class="nav-link" href="register.html">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 royal-slide-in-left">
+                    <h1 class="display-4 fw-bold text-white mb-4">Pure Water Delivered to Your Doorstep</h1>
+                    <p class="lead text-white mb-4">Premium water cans and bulk delivery services for homes and businesses</p>
+                    <a href="product_list.html" class="btn btn-light btn-lg">
+                        <i class="fas fa-shopping-bag"></i> Shop Now
+                    </a>
+                </div>
+                <div class="col-lg-6 royal-slide-in-right">
+                    <img src="images/1.jpg" alt="Water Delivery" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-5 royal-fade-in">
+        <div class="container">
+            <h2 class="text-center mb-5">Featured Water Products</h2>
+            
+            <!-- Quick Links -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3 royal-zoom-in">
+                    <a href="product_list.html" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-shopping-bag"></i> Shop All Products
+                    </a>
+                </div>
+                <div class="col-md-4 mb-3 royal-zoom-in">
+                    <a href="bulk_orders.html" class="btn btn-success w-100">
+                        <i class="fas fa-truck"></i> Residential Bulk Orders
+                    </a>
+                </div>
+                <div class="col-md-4 mb-3 royal-zoom-in">
+                    <a href="custom_order.html" class="btn btn-info w-100">
+                        <i class="fas fa-calculator"></i> Custom Quantity Order
+                    </a>
+                </div>
+            </div>
+            
+            <div class="row" id="featuredProducts">
+                <!-- Products will be loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-tint"></i> AquaStore</h5>
+                    <p>Your trusted partner for clean water delivery</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>&copy; 2024 AquaStore. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/cart-api.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize authentication and load user session
+            if (typeof authManager !== 'undefined') {
+                authManager.init();
+            } else {
+                checkLoginStatus();
+            }
+            
+            // Update navigation based on login status
+            updateNavigation();
+            
+            // Load featured products
+            loadFeaturedProducts();
+            
+            // Initialize cart
+            if (typeof cartManager !== 'undefined' && authManager.isAuthenticated()) {
+                cartManager.loadCartItems();
+            } else {
+                loadCartFromStorage();
+            }
+            updateCartBadge();
+        });
+
+        function updateNavigation() {
+            const userDropdown = document.getElementById('userDropdown');
+            const authActions = document.getElementById('authActions');
+            const authActions2 = document.getElementById('authActions2');
+            const navUserName = document.getElementById('navUserName');
+            
+            // Get current user from either authManager or main.js
+            const currentUser = typeof authManager !== 'undefined' && authManager.isAuthenticated() 
+                ? authManager.currentUser 
+                : window.currentUser;
+            
+            if (currentUser) {
+                // Show user dropdown, hide auth buttons
+                if (userDropdown) userDropdown.style.display = 'block';
+                if (authActions) authActions.style.display = 'none';
+                if (authActions2) authActions2.style.display = 'none';
+                if (navUserName) navUserName.textContent = currentUser.fullName || currentUser.username || currentUser.email;
+                
+                // Show welcome message
+                showWelcomeMessage(currentUser);
+            } else {
+                // Show auth buttons, hide user dropdown
+                if (userDropdown) userDropdown.style.display = 'none';
+                if (authActions) authActions.style.display = 'block';
+                if (authActions2) authActions2.style.display = 'block';
+                if (navUserName) navUserName.textContent = 'Account';
+            }
+        }
+        
+        function showWelcomeMessage(user) {
+            // Create welcome notification for logged-in users
+            const welcomeDiv = document.createElement('div');
+            welcomeDiv.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3';
+            welcomeDiv.style.zIndex = '9999';
+            welcomeDiv.style.minWidth = '300px';
+            welcomeDiv.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-user-check me-2"></i>
+                    <div class="flex-grow-1">
+                        <strong>Welcome back, ${user.fullName || user.username || user.email}!</strong><br>
+                        <small class="text-muted">You are successfully logged in to your account.</small>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            document.body.appendChild(welcomeDiv);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (welcomeDiv.parentElement) {
+                    welcomeDiv.remove();
+                }
+            }, 5000);
+        }
+
+        function loadFeaturedProducts() {
+            const featuredProducts = [
+                { id: 1, name: '1L Water Can', price: 25, size: '1L', image: 'images/1.jpg' },
+                { id: 2, name: '2L Water Can', price: 45, size: '2L', image: 'images/2.jpg' },
+                { id: 3, name: '5L Water Can', price: 95, size: '5L', image: 'images/5.jpg' },
+                { id: 4, name: '10L Water Can', price: 180, size: '10L', image: 'images/10.jpg' },
+                { id: 5, name: '20L Water Can', price: 350, size: '20L', image: 'images/20.jpg' }
+            ];
+
+            const container = document.getElementById('featuredProducts');
+            container.innerHTML = featuredProducts.map(product => `
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 product-card">
+                        <img src="${product.image}" class="card-img-top" alt="${product.name}">
+                        <div class="card-body">
+                            <h5 class="card-title">${product.name}</h5>
+                            <p class="card-text">Size: ${product.size}</p>
+                            <p class="card-text fw-bold text-primary">₹${product.price}</p>
+                            <button class="btn btn-primary w-100" onclick="addToCart(${product.id}, '${product.name}', ${product.price}, '${product.image}')">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>

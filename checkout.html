@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - AquaStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Sticky Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-tint"></i> AquaStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register.html">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Checkout Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="mb-4">Checkout</h2>
+            
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="checkout-form">
+                        <h4 class="mb-4">Delivery Information</h4>
+                        <form id="checkoutForm" onsubmit="processCheckout(event)">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="fullName" class="form-label">Full Name *</label>
+                                    <input type="text" class="form-control" id="fullName" required>
+                                    <div class="error-message" id="fullNameError"></div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Phone Number *</label>
+                                    <input type="tel" class="form-control" id="phone" maxlength="10" required>
+                                    <div class="error-message" id="phoneError"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Address Line *</label>
+                                <textarea class="form-control" id="address" rows="3" required></textarea>
+                                <div class="error-message" id="addressError"></div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="city" class="form-label">City *</label>
+                                    <input type="text" class="form-control" id="city" required>
+                                    <div class="error-message" id="cityError"></div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="pincode" class="form-label">PIN Code *</label>
+                                    <input type="text" class="form-control" id="pincode" maxlength="6" required>
+                                    <div class="error-message" id="pincodeError"></div>
+                                </div>
+                            </div>
+                            
+                            <h4 class="mb-4 mt-4">Payment Method</h4>
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="Cash on Delivery" checked>
+                                    <label class="form-check-label" for="cod">
+                                        <i class="fas fa-money-bill-wave"></i> Cash on Delivery
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" id="online" value="Online Payment">
+                                    <label class="form-check-label" for="online">
+                                        <i class="fas fa-credit-card"></i> Online Payment
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="success-message" id="successMessage">
+                                <i class="fas fa-check-circle"></i> Order placed successfully!
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg" id="submitOrderBtn">
+                                <i class="fas fa-lock"></i> Place Order
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Order Summary</h5>
+                            <hr>
+                            <div id="orderSummary">
+                                <!-- Order items will be loaded by JavaScript -->
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Subtotal:</span>
+                                <span id="subtotal">₹0</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Delivery:</span>
+                                <span class="text-success">Free</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <h5>Grand Total:</h5>
+                                <h5 id="grandTotal">₹0</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-tint"></i> AquaStore</h5>
+                    <p>Your trusted partner for clean water delivery</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>&copy; 2024 AquaStore. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCartFromStorage();
+            updateCartBadge();
+            loadOrderSummary();
+            
+            // Add input event listeners for real-time validation
+            document.getElementById('pincode').addEventListener('input', validatePincode);
+            document.getElementById('phone').addEventListener('input', validatePhone);
+        });
+
+        function loadOrderSummary() {
+            const container = document.getElementById('orderSummary');
+            
+            if (cart.length === 0) {
+                container.innerHTML = '<p class="text-muted">Your cart is empty</p>';
+                document.getElementById('subtotal').textContent = '₹0';
+                document.getElementById('grandTotal').textContent = '₹0';
+                document.getElementById('submitOrderBtn').disabled = true;
+                return;
+            }
+            
+            container.innerHTML = cart.map(item => `
+                <div class="d-flex justify-content-between mb-2">
+                    <span>${item.name} x ${item.quantity}</span>
+                    <span>₹${item.price * item.quantity}</span>
+                </div>
+            `).join('');
+            
+            const total = calculateCartTotal();
+            document.getElementById('subtotal').textContent = `₹${total}`;
+            document.getElementById('grandTotal').textContent = `₹${total}`;
+        }
+
+        function validatePincode() {
+            const pincode = document.getElementById('pincode');
+            const errorElement = document.getElementById('pincodeError');
+            const pincodeRegex = /^\d{6}$/;
+            
+            if (pincode.value && !pincodeRegex.test(pincode.value)) {
+                errorElement.textContent = 'PIN code must be exactly 6 digits';
+                errorElement.classList.add('show');
+                pincode.classList.add('is-invalid');
+            } else {
+                errorElement.classList.remove('show');
+                pincode.classList.remove('is-invalid');
+            }
+        }
+
+        function validatePhone() {
+            const phone = document.getElementById('phone');
+            const errorElement = document.getElementById('phoneError');
+            const phoneRegex = /^\d{10}$/;
+            
+            if (phone.value && !phoneRegex.test(phone.value)) {
+                errorElement.textContent = 'Phone number must be exactly 10 digits';
+                errorElement.classList.add('show');
+                phone.classList.add('is-invalid');
+            } else {
+                errorElement.classList.remove('show');
+                phone.classList.remove('is-invalid');
+            }
+        }
+    </script>
+</body>
+</html>

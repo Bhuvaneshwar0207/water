@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Test - AquaStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h1>Cart Functionality Test</h1>
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Add Test Products</h5>
+                        <button class="btn btn-primary me-2" onclick="addTestProduct(1, '20L Water Can', 50, 'images/water1.jpg')">
+                            Add 20L Can
+                        </button>
+                        <button class="btn btn-primary me-2" onclick="addTestProduct(2, '10L Water Can', 30, 'images/water2.jpg')">
+                            Add 10L Can
+                        </button>
+                        <button class="btn btn-primary" onclick="addTestProduct(3, '5L Water Can', 20, 'images/water3.jpg')">
+                            Add 5L Can
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Cart Actions</h5>
+                        <button class="btn btn-warning me-2" onclick="testCartPersistence()">
+                            Test Persistence
+                        </button>
+                        <button class="btn btn-danger me-2" onclick="clearCart()">
+                            Clear Cart
+                        </button>
+                        <button class="btn btn-info" onclick="showCartStatus()">
+                            Show Status
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Test Results</h5>
+                        <div id="testResults" class="alert alert-info">
+                            Click the buttons above to test cart functionality
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/cart-api.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        function addTestProduct(id, name, price, image) {
+            // Use cartManager if available, otherwise fallback to main.js
+            if (typeof cartManager !== 'undefined') {
+                cartManager.addToCart(id, name, price, image, 1);
+            } else {
+                addToCart(id, name, price, image);
+            }
+            updateTestResults(`Added ${name} to cart`);
+        }
+
+        function clearCart() {
+            if (typeof cartManager !== 'undefined') {
+                cartManager.clearCart();
+            } else {
+                cart = [];
+                saveCartToStorage();
+                updateCartBadge();
+            }
+            updateTestResults('Cart cleared');
+        }
+
+        function testCartPersistence() {
+            const cartItems = typeof cartManager !== 'undefined' ? cartManager.cartItems : cart;
+            const itemCount = cartItems.length;
+            
+            // Save current cart state
+            const cartState = JSON.stringify(cartItems);
+            
+            // Clear and reload
+            if (typeof cartManager !== 'undefined') {
+                cartManager.clearCart();
+                setTimeout(() => {
+                    // Restore cart
+                    const restoredItems = JSON.parse(cartState);
+                    restoredItems.forEach(item => {
+                        cartManager.addToCart(item.productId || item.id, item.name, item.price, item.image, item.quantity);
+                    });
+                    updateTestResults(`Persistence test completed. Restored ${itemCount} items`);
+                }, 1000);
+            } else {
+                cart = [];
+                saveCartToStorage();
+                setTimeout(() => {
+                    cart = JSON.parse(cartState);
+                    saveCartToStorage();
+                    updateCartBadge();
+                    updateTestResults(`Persistence test completed. Restored ${itemCount} items`);
+                }, 1000);
+            }
+        }
+
+        function showCartStatus() {
+            const cartItems = typeof cartManager !== 'undefined' ? cartManager.cartItems : cart;
+            const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+            const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            let status = `Cart Status: ${itemCount} items, Total: ₹${total}\n\nItems:\n`;
+            cartItems.forEach(item => {
+                status += `- ${item.name} (Qty: ${item.quantity}, Price: ₹${item.price * item.quantity})\n`;
+            });
+            
+            updateTestResults(status);
+        }
+
+        function updateTestResults(message) {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = `<strong>${new Date().toLocaleTimeString()}:</strong><br>${message.replace(/\n/g, '<br>')}`;
+            resultsDiv.className = 'alert alert-success';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTestResults('Cart test page loaded. Ready for testing!');
+        });
+    </script>
+</body>
+</html>

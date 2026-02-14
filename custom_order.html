@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Water Order - AquaStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Sticky Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-tint"></i> AquaStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register.html">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Custom Order Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2>Custom Water Order</h2>
+                <p class="lead">Order exactly the amount of water you need</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="mb-4">Specify Your Requirements</h4>
+                            <form onsubmit="processCustomOrder(event)">
+                                <!-- Liter Input Methods -->
+                                <div class="mb-4">
+                                    <label class="form-label">How would you like to specify the quantity?</label>
+                                    <div class="btn-group w-100 mb-3" role="group">
+                                        <button type="button" class="btn btn-outline-primary active" onclick="setInputMethod('manual')">Manual Entry</button>
+                                        <button type="button" class="btn btn-outline-primary" onclick="setInputMethod('slider')">Slider Selection</button>
+                                        <button type="button" class="btn btn-outline-primary" onclick="setInputMethod('calculator')">Calculator</button>
+                                    </div>
+                                </div>
+
+                                <!-- Manual Input -->
+                                <div id="manualInput" class="input-method">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="manualLiters" class="form-label">Enter Liters</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control" id="manualLiters" min="1" max="10000" placeholder="Enter amount in liters">
+                                                <span class="input-group-text">Liters</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="manualPrice" class="form-label">Estimated Price</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">₹</span>
+                                                <input type="text" class="form-control" id="manualPrice" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Slider Input -->
+                                <div id="sliderInput" class="input-method" style="display: none;">
+                                    <div class="mb-3">
+                                        <label for="litersSlider" class="form-label">Select Liters: <span id="sliderDisplay">500</span>L</label>
+                                        <input type="range" class="form-range" id="litersSlider" min="1" max="10000" value="500" step="10">
+                                        <div class="d-flex justify-content-between">
+                                            <small>1L</small>
+                                            <small>10,000L</small>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="sliderPrice" class="form-label">Estimated Price</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">₹</span>
+                                            <input type="text" class="form-control" id="sliderPrice" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Calculator Input -->
+                                <div id="calculatorInput" class="input-method" style="display: none;">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="calcCans" class="form-label">Number of Cans</label>
+                                            <input type="number" class="form-control" id="calcCans" min="1" placeholder="Number of cans">
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="calcSize" class="form-label">Can Size (Liters)</label>
+                                            <select class="form-select" id="calcSize">
+                                                <option value="1">1L</option>
+                                                <option value="2">2L</option>
+                                                <option value="5">5L</option>
+                                                <option value="10">10L</option>
+                                                <option value="20">20L</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="calcTotal" class="form-label">Total Liters</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="calcTotal" readonly>
+                                                <span class="input-group-text">Liters</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="calcPrice" class="form-label">Estimated Price</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">₹</span>
+                                            <input type="text" class="form-control" id="calcPrice" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Common Quantities -->
+                                <div class="mb-4">
+                                    <label class="form-label">Quick Select Common Quantities:</label>
+                                    <div class="row">
+                                        <div class="col-6 col-md-3 mb-2">
+                                            <button type="button" class="btn btn-outline-secondary w-100" onclick="setQuantity(100)">100L</button>
+                                        </div>
+                                        <div class="col-6 col-md-3 mb-2">
+                                            <button type="button" class="btn btn-outline-secondary w-100" onclick="setQuantity(250)">250L</button>
+                                        </div>
+                                        <div class="col-6 col-md-3 mb-2">
+                                            <button type="button" class="btn btn-outline-secondary w-100" onclick="setQuantity(500)">500L</button>
+                                        </div>
+                                        <div class="col-6 col-md-3 mb-2">
+                                            <button type="button" class="btn btn-outline-secondary w-100" onclick="setQuantity(1000)">1000L</button>
+                                        </div>
+                                        <div class="col-6 col-md-3 mb-2">
+                                            <button type="button" class="btn btn-outline-secondary w-100" onclick="setQuantity(2000)">2000L</button>
+                                        </div>
+                                        <div class="col-6 col-md-3 mb-2">
+                                            <button type="button" class="btn btn-outline-secondary w-100" onclick="setQuantity(5000)">5000L</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Order Details -->
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="deliveryType" class="form-label">Delivery Type</label>
+                                        <select class="form-select" id="deliveryType" required>
+                                            <option value="">Select Delivery Type</option>
+                                            <option value="standard">Standard Delivery (3-5 days)</option>
+                                            <option value="express">Express Delivery (1-2 days)</option>
+                                            <option value="emergency">Emergency Delivery (Same day)</option>
+                                            <option value="subscription">Regular Subscription</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="customNotes" class="form-label">Special Instructions</label>
+                                        <textarea class="form-control" id="customNotes" rows="2" placeholder="Any special delivery instructions..."></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i>
+                                    <strong>Pricing:</strong> ₹18 per liter for custom orders (bulk discount applies automatically)
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Order Summary</h5>
+                            <hr>
+                            <div id="orderSummary">
+                                <p class="text-muted">Configure your order to see summary</p>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h6>Volume Equivalents:</h6>
+                                <div id="volumeEquivalents" class="small text-muted">
+                                    <p>Enter quantity to see equivalents</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-tint"></i> AquaStore</h5>
+                    <p>Your trusted partner for clean water delivery</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>&copy; 2024 AquaStore. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        let currentInputMethod = 'manual';
+        let currentLiters = 0;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartBadge();
+            setupEventListeners();
+        });
+
+        function setInputMethod(method) {
+            currentInputMethod = method;
+            
+            // Hide all input methods
+            document.querySelectorAll('.input-method').forEach(el => el.style.display = 'none');
+            
+            // Show selected method
+            document.getElementById(method + 'Input').style.display = 'block';
+            
+            // Update button states
+            document.querySelectorAll('.btn-group button').forEach(btn => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-outline-primary');
+            });
+            event.target.classList.remove('btn-outline-primary');
+            event.target.classList.add('btn-primary');
+        }
+
+        function setupEventListeners() {
+            // Manual input
+            const manualInput = document.getElementById('manualLiters');
+            if (manualInput) {
+                manualInput.addEventListener('input', function() {
+                    currentLiters = parseInt(this.value) || 0;
+                    updateManualPrice();
+                    updateSummary();
+                });
+            }
+
+            // Slider input
+            const sliderInput = document.getElementById('litersSlider');
+            if (sliderInput) {
+                sliderInput.addEventListener('input', function() {
+                    currentLiters = parseInt(this.value) || 0;
+                    document.getElementById('sliderDisplay').textContent = currentLiters;
+                    updateSliderPrice();
+                    updateSummary();
+                });
+            }
+
+            // Calculator input
+            const calcCans = document.getElementById('calcCans');
+            const calcSize = document.getElementById('calcSize');
+            if (calcCans && calcSize) {
+                calcCans.addEventListener('input', updateCalculator);
+                calcSize.addEventListener('change', updateCalculator);
+            }
+        }
+
+        function updateManualPrice() {
+            const price = currentLiters * 18;
+            document.getElementById('manualPrice').value = price.toLocaleString('en-IN');
+        }
+
+        function updateSliderPrice() {
+            const price = currentLiters * 18;
+            document.getElementById('sliderPrice').value = price.toLocaleString('en-IN');
+        }
+
+        function updateCalculator() {
+            const cans = parseInt(document.getElementById('calcCans').value) || 0;
+            const size = parseInt(document.getElementById('calcSize').value) || 0;
+            const totalLiters = cans * size;
+            const price = totalLiters * 18;
+            
+            currentLiters = totalLiters;
+            document.getElementById('calcTotal').value = totalLiters.toLocaleString('en-IN');
+            document.getElementById('calcPrice').value = price.toLocaleString('en-IN');
+            updateSummary();
+        }
+
+        function setQuantity(liters) {
+            currentLiters = liters;
+            
+            // Update all input methods
+            document.getElementById('manualLiters').value = liters;
+            document.getElementById('litersSlider').value = liters;
+            document.getElementById('sliderDisplay').textContent = liters;
+            
+            updateManualPrice();
+            updateSliderPrice();
+            updateSummary();
+        }
+
+        function updateSummary() {
+            if (currentLiters <= 0) {
+                document.getElementById('orderSummary').innerHTML = '<p class="text-muted">Configure your order to see summary</p>';
+                document.getElementById('volumeEquivalents').innerHTML = '<p>Enter quantity to see equivalents</p>';
+                return;
+            }
+
+            const price = currentLiters * 18;
+            const cans20L = Math.ceil(currentLiters / 20);
+            const cans10L = Math.ceil(currentLiters / 10);
+            const cans5L = Math.ceil(currentLiters / 5);
+            const gallons = (currentLiters * 0.264172).toFixed(1);
+
+            document.getElementById('orderSummary').innerHTML = `
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Quantity:</span>
+                    <strong>${currentLiters.toLocaleString('en-IN')} Liters</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Price:</span>
+                    <strong>₹${price.toLocaleString('en-IN')}</strong>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <h5>Total:</h5>
+                    <h5 class="text-primary">₹${price.toLocaleString('en-IN')}</h5>
+                </div>
+            `;
+
+            document.getElementById('volumeEquivalents').innerHTML = `
+                <p><strong>≈ ${cans20L}</strong> x 20L cans</p>
+                <p><strong>≈ ${cans10L}</strong> x 10L cans</p>
+                <p><strong>≈ ${cans5L}</strong> x 5L cans</p>
+                <p><strong>≈ ${gallons}</strong> US gallons</p>
+            `;
+        }
+
+        function processCustomOrder(event) {
+            event.preventDefault();
+            
+            if (currentLiters <= 0) {
+                alert('Please specify a valid quantity');
+                return;
+            }
+
+            const deliveryType = document.getElementById('deliveryType').value;
+            const notes = document.getElementById('customNotes').value;
+            const price = currentLiters * 18;
+
+            const customOrder = {
+                id: 'custom_' + Date.now(),
+                name: `Custom Water Order - ${currentLiters}L`,
+                price: price,
+                size: `${currentLiters}L`,
+                image: 'https://via.placeholder.com/200x200/007BFF/ffffff?text=Custom',
+                quantity: 1,
+                category: 'custom-order',
+                deliveryType: deliveryType,
+                notes: notes
+            };
+            
+            cart.push(customOrder);
+            saveCartToStorage();
+            updateCartBadge();
+            
+            showNotification('Custom order added to cart!', 'success');
+            
+            setTimeout(() => {
+                window.location.href = 'cart.html';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

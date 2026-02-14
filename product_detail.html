@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - AquaStore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Sticky Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-tint"></i> AquaStore
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register.html">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" href="cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Detail -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row" id="productDetail">
+                <!-- Product will be loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-tint"></i> AquaStore</h5>
+                    <p>Your trusted partner for clean water delivery</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>&copy; 2024 AquaStore. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        let currentProduct = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProductDetail();
+            updateCartBadge();
+        });
+
+        function loadProductDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id'));
+            
+            const allProducts = [
+                { id: 1, name: '1L Water Can', price: 25, size: '1L', image: 'https://via.placeholder.com/400x400/007BFF/ffffff?text=1L', description: 'Perfect for personal use. Compact and easy to carry 1-liter water can made from food-grade plastic.' },
+                { id: 2, name: '2L Water Can', price: 45, size: '2L', image: 'https://via.placeholder.com/400x400/007BFF/ffffff?text=2L', description: 'Ideal for small families. 2-liter water can with secure cap and easy grip handle.' },
+                { id: 3, name: '5L Water Can', price: 95, size: '5L', image: 'https://via.placeholder.com/400x400/007BFF/ffffff?text=5L', description: 'Great for daily use. 5-liter water can with durable construction and leak-proof design.' },
+                { id: 4, name: '10L Water Can', price: 180, size: '10L', image: 'https://via.placeholder.com/400x400/007BFF/ffffff?text=10L', description: 'Perfect for medium families. 10-liter water can with sturdy handle and tap for easy pouring.' },
+                { id: 5, name: '20L Water Can', price: 350, size: '20L', image: 'https://via.placeholder.com/400x400/007BFF/ffffff?text=20L', description: 'Best value for large families. 20-liter water can with premium quality and long-lasting durability.' },
+                { id: 6, name: 'Bulk 50L Delivery', price: 800, size: '50L', image: 'https://via.placeholder.com/400x400/007BFF/ffffff?text=50L', description: 'Bulk water delivery for small offices and events. 50-liter water delivered in sealed containers.' },
+                { id: 7, name: 'Bulk 100L Delivery', price: 1500, size: '100L', image: 'https://via.placeholder.com/400x400/007BFF/ffffff?text=100L', description: 'Perfect for medium businesses. 100-liter bulk water delivery with professional service.' },
+                { id: 8, name: 'Bulk 200L Delivery', price: 2800, size: '200L', image: 'https://via.placeholder.com/400x400/007BFF/ffffff?text=200L', description: 'Large scale water delivery. 200-liter bulk water supply for industrial and commercial use.' }
+            ];
+            
+            currentProduct = allProducts.find(p => p.id === productId);
+            
+            if (!currentProduct) {
+                document.getElementById('productDetail').innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                        <h4>Product Not Found</h4>
+                        <p class="text-muted">The product you're looking for doesn't exist.</p>
+                        <a href="product_list.html" class="btn btn-primary">Back to Products</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            renderProductDetail();
+        }
+
+        function renderProductDetail() {
+            const container = document.getElementById('productDetail');
+            container.innerHTML = `
+                <div class="col-md-6">
+                    <img src="${currentProduct.image}" alt="${currentProduct.name}" class="img-fluid rounded shadow">
+                </div>
+                <div class="col-md-6">
+                    <h2 class="mb-3">${currentProduct.name}</h2>
+                    <p class="lead text-muted mb-3">${currentProduct.description}</p>
+                    
+                    <div class="mb-4">
+                        <span class="badge bg-primary fs-6 p-2">${currentProduct.size}</span>
+                    </div>
+                    
+                    <h3 class="text-primary mb-4">₹${currentProduct.price}</h3>
+                    
+                    <div class="mb-4">
+                        <label for="quantity" class="form-label">Quantity:</label>
+                        <div class="quantity-controls">
+                            <button onclick="decreaseQuantity()">-</button>
+                            <input type="number" id="quantity" value="1" min="1" max="10" class="form-control" style="width: 80px;">
+                            <button onclick="increaseQuantity()">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Total: ₹<span id="totalPrice">${currentProduct.price}</span></h5>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary btn-lg" onclick="addToCartWithQuantity()">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                        <a href="product_list.html" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Products
+                        </a>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h5>Product Features:</h5>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success"></i> Food-grade plastic material</li>
+                            <li><i class="fas fa-check text-success"></i> Leak-proof design</li>
+                            <li><i class="fas fa-check text-success"></i> Easy to handle</li>
+                            <li><i class="fas fa-check text-success"></i> Reusable and recyclable</li>
+                            <li><i class="fas fa-check text-success"></i> BPA-free construction</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function increaseQuantity() {
+            const quantityInput = document.getElementById('quantity');
+            const currentValue = parseInt(quantityInput.value);
+            if (currentValue < 10) {
+                quantityInput.value = currentValue + 1;
+                updateTotalPrice();
+            }
+        }
+
+        function decreaseQuantity() {
+            const quantityInput = document.getElementById('quantity');
+            const currentValue = parseInt(quantityInput.value);
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+                updateTotalPrice();
+            }
+        }
+
+        function updateTotalPrice() {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const totalPrice = currentProduct.price * quantity;
+            document.getElementById('totalPrice').textContent = totalPrice;
+        }
+
+        function addToCartWithQuantity() {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            
+            for (let i = 0; i < quantity; i++) {
+                addToCart(currentProduct.id, currentProduct.name, currentProduct.price, currentProduct.image);
+            }
+            
+            // Reset quantity to 1
+            document.getElementById('quantity').value = 1;
+            updateTotalPrice();
+        }
+    </script>
+</body>
+</html>
